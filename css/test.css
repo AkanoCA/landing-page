@@ -1,0 +1,15 @@
+.link-button {
+    width: 100px;
+    height: 50px;
+
+    margin-bottom: 30px;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    cursor: pointer;
+    background-color: rgba(111, 199, 130, 0.3);
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
