@@ -110,4 +110,65 @@ window.addEventListener('DOMContentLoaded', function () {
 
     modalWindow(more, close, overlay);
     modalWindow(description, close, overlay);
+
+    //-----Form
+
+    function postForm(form) {
+
+        let input = form.querySelectorAll('input');
+
+        let message = {
+            loading: 'Загрузка',
+            success: 'Спасибо! Скоро мы с вами свяжемся!',
+            failure: 'Что-то пошло не так...'
+        };
+
+        let statusMsg = document.createElement('div');
+        statusMsg.classList.add('status');
+
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            form.appendChild(statusMsg);
+
+            let request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+            request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+
+            let formData = new FormData(form);
+            
+            let obj = {};
+            formData.forEach(function (val, key) {
+                obj[key] = val;
+            });
+
+            console.log(formData);
+            console.log(obj);
+            
+            let json = JSON.stringify(obj);
+
+
+            request.send(json);
+
+            request.addEventListener('readystatechange', function () {
+                if (request.readyState < 4) {
+                    statusMsg.textContent = message.loading;
+                } else if (request.readyState === 4 && request.status == 200) {
+                    statusMsg.textContent = message.success;
+                } else {
+                    statusMsg.textContent = message.failure;
+                }
+            });
+
+            for (let i = 0; i < input.length; i++) {
+                input[i].value = '';
+            }
+        });
+    }
+
+    let mainForm = document.querySelector('.main-form');
+    let contactForm = document.querySelector('#form');
+
+    postForm(mainForm);
+    postForm(contactForm);
 });
